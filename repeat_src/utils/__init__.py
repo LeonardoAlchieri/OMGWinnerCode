@@ -3,7 +3,7 @@ from yaml import safe_load as load_yaml
 from typing import Dict, Any
 import numpy as np
 from numpy import expand_dims, array
-from keras.preprocessing import image
+from keras.utils import load_img, img_to_array  
 from keras_vggface.utils import preprocess_input
 from typing import List
 
@@ -33,8 +33,8 @@ def load_images(file_list: List[str], batch_size: int) -> array:
         count: int = 0
         x: list = []
         for path in file_list:
-            x_temp = image.load_img(path)
-            x_temp = image.img_to_array(x_temp)
+            x_temp = load_img(path)
+            x_temp = img_to_array(x_temp)
             x_temp = expand_dims(x_temp, axis=0)
             x_temp= preprocess_input(x_temp, version=2)
             

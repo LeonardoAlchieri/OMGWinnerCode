@@ -3,6 +3,6 @@ input_shape:
     - 256
     - 3
 batch_size: 16
-ground_truth_path: "/data/leonardo/OMGEmotionChallenge/omg_ValidationVideos.csv"
-frames_path: "/data/leonardo/OMGEmotionChallenge/Validation_Set/trimmed_faces/"
+ground_truth_path: "/Users/leonardoalchieri/Desktop/GIT/MMED/data.nosync/omg_ValidationVideos.csv"
+frames_path: "/Users/leonardoalchieri/Desktop/GIT/MMED/data.nosync/Validation_Set/trimmed_faces/"
 saving_path: "./extracted_features/Validation_Set/"

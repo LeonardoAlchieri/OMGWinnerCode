@@ -1,4 +1,5 @@
-from keras.models import Model, Input
+from keras.models import Model
+from keras.layers import Input
 from keras_vggface.vggface import VGGFace
 
 from codes.CNN_model import model as customCNN

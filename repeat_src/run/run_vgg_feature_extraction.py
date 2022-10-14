@@ -46,7 +46,7 @@ def main(random_state: int):
         frames_path=configs["frames_path"],
     )
 
-    count = 0
+    # count = 0
     for video_id, current_video_path in tqdm(
         paths_to_faces.items(), desc="Extracting features w/ VGG16-Face"
     ):
@@ -69,10 +69,10 @@ def main(random_state: int):
             join_paths(configs["saving_path"], f"{video_id}.csv"), index=None
         )
         del current_video_features
-        count += 1
-        if count == 4:
-            print('Debugger stopper')
-            break
+        # count += 1
+        # if count == 4:
+        #     print('Debugger stopper')
+        #     break
 
 
 if __name__ == "__main__":
