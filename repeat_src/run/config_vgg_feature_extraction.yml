@@ -1,0 +1,8 @@
+input_shape:
+    - 256
+    - 256
+    - 3
+batch_size: 16
+ground_truth_path: "/data/leonardo/OMGEmotionChallenge/omg_ValidationVideos.csv"
+frames_path: "/data/leonardo/OMGEmotionChallenge/Validation_Set/trimmed_faces/"
+saving_path: "./extracted_features/Validation_Set/"

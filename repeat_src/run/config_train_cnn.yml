@@ -1,0 +1,13 @@
+model_name: 'cnn'
+model_params:
+  timesteps: 64
+  input_shape: 512
+  hidden_size: #param not actually used by CNN
+  filters: 128 
+  ac: 'sigmoid+tanh' #activation of the output layer
+optimizer_params: #hard coded SGD optimizer
+  lr: 0.005 
+  momentum: 0.5 
+  nesterov: True 
+  decay: 0.001
+max_length: 64 # my guess is that this parameters defines how many frame are considered for the training
