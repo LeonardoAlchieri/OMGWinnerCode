@@ -5,7 +5,7 @@ data.nosync/
 .vscode/
 logs/
 *.csv
-
+python-api-for-seetaface-on-linux/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
