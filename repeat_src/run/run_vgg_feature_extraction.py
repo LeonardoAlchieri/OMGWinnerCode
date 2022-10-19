@@ -13,7 +13,7 @@ from keras.backend import clear_session
 from sys import path
 path.append(".")
 from repeat_src.utils import load_config, load_images
-from repeat_src.utils.models import get_backbone_model
+from repeat_src.utils.visual import get_backbone_model
 
 
 _filename: str = basename(__file__).split(".")[0][4:]

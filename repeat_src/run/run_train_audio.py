@@ -24,7 +24,7 @@ from tensorflow.keras.utils import set_random_seed as set_keras_seed
 # FIXME: move to package imports, and not relative imports w/ path.append
 path.append(".")
 from repeat_src.utils import load_config
-from repeat_src.utils.visual import get_model
+from repeat_src.utils.audio import get_model
 from repeat_src.utils.train_visual import custom_train
 
 _filename: str = basename(__file__).split(".")[0][4:]
@@ -46,39 +46,11 @@ def main(random_state: int):
     model = get_model(
         model_name=configs["model_name"], model_params=configs["model_params"]
     )
-
+    
     optimizer = SGD(**configs["optimizer_params"])
 
     model.compile(loss="mae", optimizer=optimizer)
-
-    # load the list of file containing the extracted traine features
-    train_file_list: ndarray = array(glob(
-        join_path(configs["extracted_features"]["train_path"], "*/*.csv")
-    ))
-    # load the list of file containing the extracted validation features
-    validation_file_list: ndarray = array(glob(
-        join_path(configs["extracted_features"]["validation_path"], "*/*.csv")
-    ))
     
-    # load files with the ground truth for valence and arousal
-    train_label_list: ndarray = read_csv(configs["ground_truth"]["train_path"])[
-        ["valence", "arousal"]
-    ].values
-    validation_label_list: ndarray = read_csv(
-        configs["ground_truth"]["validation_path"]
-    )[["valence", "arousal"]].values
-
-    model = custom_train(
-        model=model,
-        train_file_list=train_file_list,
-        train_label_list=train_label_list,
-        validation_file_list=validation_file_list,
-        validation_label_list=validation_label_list,
-        max_length=configs["max_length"],
-        number_of_epochs=configs["number_of_epochs"],
-        batch_size=configs["batch_size"],
-    )
-
-
-if __name__ == "__main__":
-    main(random_state=42)
+    train_data = load_extract_opensmile_features(configs['audio_files']['train_path'])
+    validation_data = load_extract_opensmile_features(configs['audio_files']['validation_path'])
+    

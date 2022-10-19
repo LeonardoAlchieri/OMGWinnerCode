@@ -1,22 +1,18 @@
 model_name: 'cnn'
 model_params:
-  timesteps: 64
-  dim: 512 # input shape
-  unit: #hidden layer size, param not actually used by CNN
-  filters: 128 
-  ac: 'sigmoid+tanh' #activation of the output layer
+  timesteps: 600000
 optimizer_params: #hard coded SGD optimizer
-  lr: 0.005 
-  momentum: 0.5 
-  nesterov: True 
+  lr: 0.003
+  momentum: 0.9
+  nesterov: True
   decay: 0.001
 max_length: 64 # my guess is that this parameters defines how many frame are considered for the training
-extracted_features:
-  train_path: "/Users/leonardoalchieri/Desktop/GIT/OMGWinnerCode/extracted_features_visual.nosync/Train_Set"
-  validation_path: "/Users/leonardoalchieri/Desktop/GIT/OMGWinnerCode/extracted_features_visual.nosync/Validation_Set"
+audio_files:
+  train_path: "/Users/leonardoalchieri/Desktop/GIT/OMGWinnerCode/extracted_features_audio.nosync/Train_Set"
+  validation_path: "/Users/leonardoalchieri/Desktop/GIT/OMGWinnerCode/extracted_features_audio.nosync/Validation_Set"
 ground_truth:
   train_path: "/Users/leonardoalchieri/Datasets/OMGEmotionChallenge/omg_TrainVideos.csv"
   validation_path: "/Users/leonardoalchieri/Datasets/OMGEmotionChallenge/omg_ValidationVideos.csv"
-number_of_epochs: 90
-batch_size: 16
+number_of_epochs: 200
+batch_size: 64
 nogpu: True # the code is so badly optimized that it does not use basically any GPU even if this is False

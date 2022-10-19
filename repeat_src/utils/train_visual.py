@@ -6,7 +6,7 @@ from pandas import read_csv
 from keras.models import Model
 
 from repeat_src.utils import correct
-from repeat_src.utils.models import generator_test
+from repeat_src.utils.visual import generator_test
 from repeat_src.utils.loss import ccc
 
 
