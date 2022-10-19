@@ -1,12 +1,15 @@
 from os.path import basename, join as join_paths
+from warnings import warn
 from numpy.random import seed as set_seed
 from pandas import read_csv, DataFrame
 from typing import Dict
 from tqdm import tqdm
 from glob import glob
 from pathlib import Path
+from gc import collect as pick_up_garbage
 
 from tensorflow.keras.optimizers import SGD
+from keras.backend import clear_session
 from sys import path
 path.append(".")
 from repeat_src.utils import load_config, load_images
@@ -50,25 +53,34 @@ def main(random_state: int):
     for video_id, current_video_path in tqdm(
         paths_to_faces.items(), desc="Extracting features w/ VGG16-Face"
     ):
+        print(f'Processing video {video_id}')
         video_frames_paths = glob(join_paths(current_video_path, "*.png"))
+        print(f'Found {len(video_frames_paths)} frames')
+        if len(video_frames_paths) == 0:
+            warn(f'No frames found for video {video_id}')
+            continue
 
         current_video_features = model.predict_generator(
             load_images(video_frames_paths, configs["batch_size"]),
             (len(video_frames_paths) // configs["batch_size"]) + 1,
-            verbose=1,
+            verbose=0,
         )
+        # FIXME: memory leak!
         # NOTE: this saving sucks and takes a lot of space, but it is how
         # the origina authors did it
         current_video_features = current_video_features[0 : len(paths_to_faces), :]
         current_video_features = DataFrame(current_video_features)
-        # FIXME: add folder creation/checking
+        
         output_folder: str = join_paths(configs["saving_path"], f"{video_id.split('/')[0]}")
         
         Path(output_folder).mkdir(parents=True, exist_ok=True)
+        print(f'Saving {video_id}')
         current_video_features.to_csv(
             join_paths(configs["saving_path"], f"{video_id}.csv"), index=None
         )
         del current_video_features
+        pick_up_garbage()
+        clear_session()
         # count += 1
         # if count == 4:
         #     print('Debugger stopper')

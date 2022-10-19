@@ -17,7 +17,7 @@ def f1(y_true, y_pred):
     label = [0,1,2,3,4,5,6]
     return f1_score(y_true,y_pred,labels=label,average="micro")
 
-def ccc(y_true, y_pred, fileName):
+def ccc(y_true, y_pred):
     true_mean = numpy.mean(y_true)
     true_variance = numpy.var(y_true)
     pred_mean = numpy.mean(y_pred)

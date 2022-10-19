@@ -2,7 +2,7 @@ input_shape:
     - 256
     - 256
     - 3
-batch_size: 16
-ground_truth_path: "/Users/leonardoalchieri/Desktop/GIT/MMED/data.nosync/omg_ValidationVideos.csv"
-frames_path: "/Users/leonardoalchieri/Desktop/GIT/MMED/data.nosync/Validation_Set/trimmed_faces/"
-saving_path: "./extracted_features/Validation_Set/"
+batch_size: 16 # this is the batch size used by the authors. Not changing for the moment
+ground_truth_path: "/Users/leonardoalchieri/Desktop/GIT/MMED/data.nosync/omg_TrainVideos.csv"
+frames_path: "/Users/leonardoalchieri/Desktop/GIT/MMED/data.nosync/Train_Set/trimmed_faces/"
+saving_path: "./extracted_features.nosync/Train_Set/"

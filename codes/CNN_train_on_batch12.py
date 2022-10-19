@@ -48,12 +48,6 @@ def generator_test(file_list, batch_size, shuffle=False, random_seed=None, max_l
             if x_temp.shape[0]<max_length:
                 x_temp=np.concatenate((x_temp,np.zeros((max_length-x_temp.shape[0],x_temp.shape[1]))),axis=0)
             else:
-#                 x_temp=x_temp[0:max_length,:]
-#                 # 固定间隔取帧
-#                 index_temp = np.linspace(0, x_temp.shape[0], max_length, dtype=int, endpoint=False)
-#                 x_temp=x_temp[index_temp,:]
-
-                # 固定取5帧间隔
                 index_temp=np.arange(x_temp.shape[0]//5)*5
                 if len(index_temp)>=max_length:
                     index_temp=index_temp[0:max_length]
