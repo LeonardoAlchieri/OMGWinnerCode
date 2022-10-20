@@ -1,0 +1,3 @@
+audio_train_file: "/data/leonardo/OMGEmotionChallenge/Train_Set/audio"
+audio_validation_file: "/data/leonardo/OMGEmotionChallenge/Validation_Set/audio"
+train_labels_path: "/data/leonardo/OMGEmotionChallenge/omg_TrainVideos.csv"

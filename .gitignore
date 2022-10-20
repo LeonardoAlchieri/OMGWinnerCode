@@ -6,6 +6,7 @@ data.nosync/
 logs/
 best_models.nosync/
 *.csv
+features_extracted_audio/
 python-api-for-seetaface-on-linux/
 
 # Byte-compiled / optimized / DLL files

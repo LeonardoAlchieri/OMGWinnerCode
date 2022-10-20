@@ -8,12 +8,16 @@ from numpy import array, ndarray
 from numpy.random import seed as set_seed
 from pandas import read_csv
 
-environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 from warnings import filterwarnings
 
-filterwarnings("ignore", message="`Model.predict_generator` is deprecated and will be removed in a future version. Please use `Model.predict`, which supports generators.")
-filterwarnings("ignore", message="The `lr` argument is deprecated, use `learning_rate` instead.")
-
+filterwarnings(
+    "ignore",
+    message="`Model.predict_generator` is deprecated and will be removed in a future version. Please use `Model.predict`, which supports generators.",
+)
+filterwarnings(
+    "ignore", message="The `lr` argument is deprecated, use `learning_rate` instead."
+)
 
 
 from keras.models import Model
@@ -39,9 +43,9 @@ def main(random_state: int):
     print("Starting model training")
     configs = load_config(path=path_to_config)
     print("Configs loaded")
-    
-    if configs['nogpu']:
-        set_visible_devices([], 'GPU')
+
+    if configs["nogpu"]:
+        set_visible_devices([], "GPU")
 
     model = get_model(
         model_name=configs["model_name"], model_params=configs["model_params"]
@@ -52,14 +56,14 @@ def main(random_state: int):
     model.compile(loss="mae", optimizer=optimizer)
 
     # load the list of file containing the extracted traine features
-    train_file_list: ndarray = array(glob(
-        join_path(configs["extracted_features"]["train_path"], "*/*.csv")
-    ))
+    train_file_list: ndarray = array(
+        glob(join_path(configs["extracted_features"]["train_path"], "*/*.csv"))
+    )
     # load the list of file containing the extracted validation features
-    validation_file_list: ndarray = array(glob(
-        join_path(configs["extracted_features"]["validation_path"], "*/*.csv")
-    ))
-    
+    validation_file_list: ndarray = array(
+        glob(join_path(configs["extracted_features"]["validation_path"], "*/*.csv"))
+    )
+
     # load files with the ground truth for valence and arousal
     train_label_list: ndarray = read_csv(configs["ground_truth"]["train_path"])[
         ["valence", "arousal"]

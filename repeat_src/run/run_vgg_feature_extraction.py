@@ -11,6 +11,7 @@ from gc import collect as pick_up_garbage
 from tensorflow.keras.optimizers import SGD
 from keras.backend import clear_session
 from sys import path
+
 path.append(".")
 from repeat_src.utils import load_config, load_images
 from repeat_src.utils.visual import get_backbone_model
@@ -53,11 +54,11 @@ def main(random_state: int):
     for video_id, current_video_path in tqdm(
         paths_to_faces.items(), desc="Extracting features w/ VGG16-Face"
     ):
-        print(f'Processing video {video_id}')
+        print(f"Processing video {video_id}")
         video_frames_paths = glob(join_paths(current_video_path, "*.png"))
-        print(f'Found {len(video_frames_paths)} frames')
+        print(f"Found {len(video_frames_paths)} frames")
         if len(video_frames_paths) == 0:
-            warn(f'No frames found for video {video_id}')
+            warn(f"No frames found for video {video_id}")
             continue
 
         current_video_features = model.predict_generator(
@@ -70,11 +71,13 @@ def main(random_state: int):
         # the origina authors did it
         current_video_features = current_video_features[0 : len(paths_to_faces), :]
         current_video_features = DataFrame(current_video_features)
-        
-        output_folder: str = join_paths(configs["saving_path"], f"{video_id.split('/')[0]}")
-        
+
+        output_folder: str = join_paths(
+            configs["saving_path"], f"{video_id.split('/')[0]}"
+        )
+
         Path(output_folder).mkdir(parents=True, exist_ok=True)
-        print(f'Saving {video_id}')
+        print(f"Saving {video_id}")
         current_video_features.to_csv(
             join_paths(configs["saving_path"], f"{video_id}.csv"), index=None
         )

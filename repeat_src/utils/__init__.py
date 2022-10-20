@@ -3,15 +3,17 @@ from yaml import safe_load as load_yaml
 from typing import Dict, Any
 import numpy as np
 from numpy import expand_dims, array
-from keras.utils import load_img, img_to_array  
+from keras.utils import load_img, img_to_array
 from keras_vggface.utils import preprocess_input
 from typing import List
+
 
 @get_execution_time_print
 def load_config(path: str = "repeat_src/run/config_dan_fcn.yml") -> Dict[str, Any]:
     with open(path, "r") as file:
         config_params = load_yaml(file)
     return config_params
+
 
 def correct(train_y, pred_val_y):
     # FIXME: I have no idea what this method is correcting for
@@ -24,10 +26,10 @@ def correct(train_y, pred_val_y):
 
 
 def load_images(file_list: List[str], batch_size: int) -> array:
-    if batch_size>len(file_list):
-        batch_size=len(file_list)
-    
-    # NOTE: the while true allow to iterate on a loop through the yield 
+    if batch_size > len(file_list):
+        batch_size = len(file_list)
+
+    # NOTE: the while true allow to iterate on a loop through the yield
     # values. Without it, only the first value would be yielded each time
     while True:
         count: int = 0
@@ -36,8 +38,8 @@ def load_images(file_list: List[str], batch_size: int) -> array:
             x_temp = load_img(path)
             x_temp = img_to_array(x_temp)
             x_temp = expand_dims(x_temp, axis=0)
-            x_temp= preprocess_input(x_temp, version=2)
-            
+            x_temp = preprocess_input(x_temp, version=2)
+
             count += 1
             x.append(x_temp)
             if count % batch_size == 0 and count != 0:
@@ -45,4 +47,3 @@ def load_images(file_list: List[str], batch_size: int) -> array:
                 x = x.reshape(batch_size, 256, 256, 3)
                 yield x
                 x = []
-                

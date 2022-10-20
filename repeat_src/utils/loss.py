@@ -10,12 +10,16 @@ import math
 
 def mse(y_true, y_pred):
     from sklearn.metrics import mean_squared_error
-    return mean_squared_error(y_true,y_pred)
+
+    return mean_squared_error(y_true, y_pred)
+
 
 def f1(y_true, y_pred):
     from sklearn.metrics import f1_score
-    label = [0,1,2,3,4,5,6]
-    return f1_score(y_true,y_pred,labels=label,average="micro")
+
+    label = [0, 1, 2, 3, 4, 5, 6]
+    return f1_score(y_true, y_pred, labels=label, average="micro")
+
 
 def ccc(y_true, y_pred):
     true_mean = numpy.mean(y_true)
@@ -23,8 +27,7 @@ def ccc(y_true, y_pred):
     pred_mean = numpy.mean(y_pred)
     pred_variance = numpy.var(y_pred)
 
-
-    rho,_ = pearsonr(y_pred,y_true)
+    rho, _ = pearsonr(y_pred, y_true)
 
     if math.isnan(rho):
         rho = 0
@@ -35,20 +38,27 @@ def ccc(y_true, y_pred):
 
     std_gt = numpy.std(y_true)
 
-    ccc = 2 * rho * std_gt * std_predictions / (
-        std_predictions ** 2 + std_gt ** 2 +
-        (pred_mean - true_mean) ** 2)
+    ccc = (
+        2
+        * rho
+        * std_gt
+        * std_predictions
+        / (std_predictions ** 2 + std_gt ** 2 + (pred_mean - true_mean) ** 2)
+    )
 
     return ccc, rho
 
-def orderFiles (folder):
+
+def orderFiles(folder):
     dataList = os.listdir(folder)
 
     if ".DS_Store" in dataList:
         dataList.remove(".DS_Store")
 
-    dataList = sorted(sorted(dataList, key=lambda x: int(x.split(".")[0].split("_")[3])), key=lambda x: int(x.split(".")[0].split("_")[1]))
-
+    dataList = sorted(
+        sorted(dataList, key=lambda x: int(x.split(".")[0].split("_")[3])),
+        key=lambda x: int(x.split(".")[0].split("_")[1]),
+    )
 
     return dataList
 
@@ -58,7 +68,6 @@ def calculateCCC(validationFolder, modelOutputFolder):
     validationFiles = orderFiles(validationFolder)
     modelOutputfolder = orderFiles(modelOutputFolder)
 
-
     cccList = []
 
     subjectCCC = []
@@ -67,13 +76,12 @@ def calculateCCC(validationFolder, modelOutputFolder):
     subjectList = []
 
     currentSubject = validationFiles[0].split(".")[0].split("_")[1]
-    for fileIndex in range (len(validationFiles)):
-        print ("File:", fileIndex)
+    for fileIndex in range(len(validationFiles)):
+        print("File:", fileIndex)
         print("File:", validationFiles[fileIndex])
 
         subject = int(validationFiles[fileIndex].split(".")[0].split("_")[1])
         story = int(validationFiles[fileIndex].split(".")[0].split("_")[3])
-
 
         if not subject in subjectList:
             subjectList.append(subject)
@@ -81,9 +89,13 @@ def calculateCCC(validationFolder, modelOutputFolder):
         if not story in storyList:
             storyList.append(story)
 
-        dataY = pandas.read_csv(validationFolder+"/"+validationFiles[fileIndex], header=0, sep=",")
+        dataY = pandas.read_csv(
+            validationFolder + "/" + validationFiles[fileIndex], header=0, sep=","
+        )
 
-        dataYPred = pandas.read_csv(modelOutputFolder+"/"+modelOutputfolder[fileIndex], header=0, sep=",")
+        dataYPred = pandas.read_csv(
+            modelOutputFolder + "/" + modelOutputfolder[fileIndex], header=0, sep=","
+        )
 
         dataYValence = dataY["valence"]
 
@@ -92,15 +104,13 @@ def calculateCCC(validationFolder, modelOutputFolder):
         # print ("A:", dataYPred)
         # raw_input("here")
 
-
-
         dataYPredValence = dataYPred["valence"]
 
-        valenceCCC, vcor = ccc(dataYValence, dataYPredValence, validationFiles[fileIndex])
-
+        valenceCCC, vcor = ccc(
+            dataYValence, dataYPredValence, validationFiles[fileIndex]
+        )
 
         subjectNumber = validationFiles[fileIndex].split(".")[0].split("_")[1]
-
 
         if subjectNumber == currentSubject:
             subjectCCC.append(valenceCCC)
@@ -110,35 +120,37 @@ def calculateCCC(validationFolder, modelOutputFolder):
             subjectCCC.append(valenceCCC)
             currentSubject = subjectNumber
 
-
     cccList.append(subjectCCC)
-
 
     print("-----------Final Results-----------")
     phrase1 = "Subjects  | "
     for i in range(len(cccList[0])):
-        phrase1 = phrase1 + "Story "+str(storyList[i])+ " | "
+        phrase1 = phrase1 + "Story " + str(storyList[i]) + " | "
 
-    print (phrase1)
+    print(phrase1)
 
+    for i in range(len(cccList)):
+        phrase2 = "Subject " + str(subjectList[i]) + " | "
+        for j in range(len(cccList[i])):
+            phrase2 = phrase2 + "{:.2f}".format(cccList[i][j]) + "    | "
 
-    for i in range (len(cccList)):
-        phrase2 = "Subject "+str(subjectList[i]) + " | "
-        for j in range (len(cccList[i])):
-            phrase2 = phrase2 + "{:.2f}".format(cccList[i][j])  + "    | "
+        print(phrase2)
 
-        print (phrase2)
-
-    print ("")
+    print("")
     print("")
     print("----------- Personalized Track-----------")
     meanCCCPersonalized = numpy.array(cccList).mean(axis=1)
 
     for i in range(len(meanCCCPersonalized)):
-        print("Subject " + str(subjectList[i]) + " | " + "{:.2f}".format(meanCCCPersonalized[i]))
+        print(
+            "Subject "
+            + str(subjectList[i])
+            + " | "
+            + "{:.2f}".format(meanCCCPersonalized[i])
+        )
 
-    print ("-----------------")
-    print ("Mean      |", "{:.2f}".format(numpy.array(meanCCCPersonalized).mean()))
+    print("-----------------")
+    print("Mean      |", "{:.2f}".format(numpy.array(meanCCCPersonalized).mean()))
     print("-----------------")
 
     print("")
@@ -147,7 +159,12 @@ def calculateCCC(validationFolder, modelOutputFolder):
     meanCCCPersonalized = numpy.array(cccList).mean(axis=0)
 
     for i in range(len(meanCCCPersonalized)):
-        print("Story " + str(storyList[i]) + " | " + "{:.2f}".format(meanCCCPersonalized[i]))
+        print(
+            "Story "
+            + str(storyList[i])
+            + " | "
+            + "{:.2f}".format(meanCCCPersonalized[i])
+        )
 
     print("---------------")
     print("Mean    |", "{:.2f}".format(numpy.array(meanCCCPersonalized).mean()))

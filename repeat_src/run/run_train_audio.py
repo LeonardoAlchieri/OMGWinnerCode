@@ -1,19 +1,22 @@
 from glob import glob
 from os import environ
 from os.path import basename
-from os.path import join as join_path
 from sys import path
 
 from numpy import array, ndarray
 from numpy.random import seed as set_seed
 from pandas import read_csv
 
-environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 from warnings import filterwarnings
 
-filterwarnings("ignore", message="`Model.predict_generator` is deprecated and will be removed in a future version. Please use `Model.predict`, which supports generators.")
-filterwarnings("ignore", message="The `lr` argument is deprecated, use `learning_rate` instead.")
-
+filterwarnings(
+    "ignore",
+    message="`Model.predict_generator` is deprecated and will be removed in a future version. Please use `Model.predict`, which supports generators.",
+)
+filterwarnings(
+    "ignore", message="The `lr` argument is deprecated, use `learning_rate` instead."
+)
 
 
 from keras.models import Model
@@ -39,18 +42,19 @@ def main(random_state: int):
     print("Starting model training")
     configs = load_config(path=path_to_config)
     print("Configs loaded")
-    
-    if configs['nogpu']:
-        set_visible_devices([], 'GPU')
+
+    if configs["nogpu"]:
+        set_visible_devices([], "GPU")
 
     model = get_model(
         model_name=configs["model_name"], model_params=configs["model_params"]
     )
-    
+
     optimizer = SGD(**configs["optimizer_params"])
 
     model.compile(loss="mae", optimizer=optimizer)
-    
-    train_data = load_extract_opensmile_features(configs['audio_files']['train_path'])
-    validation_data = load_extract_opensmile_features(configs['audio_files']['validation_path'])
-    
+
+    train_data = load_extract_opensmile_features(configs["audio_files"]["train_path"])
+    validation_data = load_extract_opensmile_features(
+        configs["audio_files"]["validation_path"]
+    )

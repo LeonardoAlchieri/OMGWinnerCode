@@ -49,7 +49,9 @@ def validate_epoch(
     if a_ccc + v_ccc > best_ccc:
         best_ccc = v_ccc + a_ccc
         best_epoch = epoch
-        print(f"Current best epoch: {best_epoch} with ccc: {best_ccc}, ccca: {a_ccc}, cccv: {v_ccc}")
+        print(
+            f"Current best epoch: {best_epoch} with ccc: {best_ccc}, ccca: {a_ccc}, cccv: {v_ccc}"
+        )
         model.save_weights("best_models.nosync/CNN_weights12_fin.h5")
     return model, best_ccc
 
@@ -80,10 +82,7 @@ def train_epoch(
 
         if x_temp.shape[0] < max_length:
             x_temp = np.concatenate(
-                (
-                    x_temp,
-                    np.zeros((max_length - x_temp.shape[0], x_temp.shape[1])),
-                ),
+                (x_temp, np.zeros((max_length - x_temp.shape[0], x_temp.shape[1])),),
                 axis=0,
             )
         else:
