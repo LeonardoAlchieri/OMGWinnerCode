@@ -4,9 +4,8 @@ data.nosync/
 .DS_Store
 .vscode/
 logs/
-best_models.nosync/
+*.nosync/
 *.csv
-features_extracted_audio/
 python-api-for-seetaface-on-linux/
 
 # Byte-compiled / optimized / DLL files

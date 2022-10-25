@@ -1,6 +1,5 @@
-from numpy import ndarray
-
 from keras.models import Model
+from numpy import ndarray
 
 from codes.aud_CNN_model import model as aud_model
 

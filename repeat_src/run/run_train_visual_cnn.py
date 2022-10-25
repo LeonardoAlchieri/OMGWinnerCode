@@ -28,8 +28,8 @@ from tensorflow.keras.utils import set_random_seed as set_keras_seed
 # FIXME: move to package imports, and not relative imports w/ path.append
 path.append(".")
 from repeat_src.utils import load_config
-from repeat_src.utils.visual import get_model
 from repeat_src.utils.train_visual import custom_train
+from repeat_src.utils.visual import get_model
 
 _filename: str = basename(__file__).split(".")[0][4:]
 
