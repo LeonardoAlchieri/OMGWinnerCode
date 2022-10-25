@@ -43,7 +43,7 @@ def ccc(y_true, y_pred):
         * rho
         * std_gt
         * std_predictions
-        / (std_predictions ** 2 + std_gt ** 2 + (pred_mean - true_mean) ** 2)
+        / (std_predictions**2 + std_gt**2 + (pred_mean - true_mean) ** 2)
     )
 
     return ccc, rho

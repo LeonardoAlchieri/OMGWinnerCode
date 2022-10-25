@@ -6,13 +6,13 @@ optimizer_params: #hard coded SGD optimizer
   momentum: 0.9
   nesterov: True
   decay: 0.001
-max_length: 64 # my guess is that this parameters defines how many frame are considered for the training
 audio_files:
-  train_path: "/Users/leonardoalchieri/Desktop/GIT/OMGWinnerCode/extracted_features_audio.nosync/Train_Set"
-  validation_path: "/Users/leonardoalchieri/Desktop/GIT/OMGWinnerCode/extracted_features_audio.nosync/Validation_Set"
+  use_raw_signal: True
+  train_path: "/data/leonardo/OMGEmotionChallenge/Train_Set/audio"
+  validation_path: "/data/leonardo/OMGEmotionChallenge/Validation_Set/audio"
 ground_truth:
-  train_path: "/Users/leonardoalchieri/Datasets/OMGEmotionChallenge/omg_TrainVideos.csv"
-  validation_path: "/Users/leonardoalchieri/Datasets/OMGEmotionChallenge/omg_ValidationVideos.csv"
+  train_path: "/data/leonardo/OMGEmotionChallenge/omg_TrainVideos.csv"
+  validation_path: "/data/leonardo/OMGEmotionChallenge/omg_ValidationVideos.csv"
 number_of_epochs: 200
 batch_size: 64
 nogpu: True # the code is so badly optimized that it does not use basically any GPU even if this is False

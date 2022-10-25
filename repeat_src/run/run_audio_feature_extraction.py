@@ -14,21 +14,25 @@ from repeat_src.utils import load_config
 
 _filename: str = basename(__file__).split(".")[0][4:]
 
+
 def clean_index(current_idx: tuple) -> list:
     new_idx = current_idx[0].split("/")[-2:]
     new_idx[-1] = new_idx[-1].split(".")[0]
     return "/".join(new_idx)
+
 
 @get_execution_time_print
 def extract_features(audio_files: List[str]) -> DataFrame:
     # loading & extracting features
     print("Loading & extracting features...")
     smile = Smile(
-        feature_set=FeatureSet.ComParE_2016, feature_level=FeatureLevel.Functionals,
+        feature_set=FeatureSet.ComParE_2016,
+        feature_level=FeatureLevel.Functionals,
     )
     audio_features: DataFrame = smile.process_files(audio_files)
     audio_features.index = audio_features.index.map(clean_index)
     return audio_features
+
 
 @get_execution_time_print
 def load_labels(labels_path: str) -> Series:
@@ -40,6 +44,7 @@ def load_labels(labels_path: str) -> Series:
     )
     return labels
 
+
 @get_execution_time_print
 def main(random_state: int):
 
@@ -50,10 +55,14 @@ def main(random_state: int):
     print("Starting model training")
     configs = load_config(path=path_to_config)
     print("Configs loaded")
-    
-    audio_train_file: List[str] = glob(join_paths(configs['audio_train_file'], "*/*.wav"))
-    audio_validation_file: List[str] = glob(join_paths(configs['audio_validation_file'], "*/*.wav"))
-    train_labels_path: str = configs['train_labels_path']
+
+    audio_train_file: List[str] = glob(
+        join_paths(configs["audio_train_file"], "*/*.wav")
+    )
+    audio_validation_file: List[str] = glob(
+        join_paths(configs["audio_validation_file"], "*/*.wav")
+    )
+    train_labels_path: str = configs["train_labels_path"]
 
     audio_train_features = extract_features(audio_train_file)
     audio_validation_features = extract_features(audio_validation_file)
@@ -102,7 +111,7 @@ def main(random_state: int):
     ).to_csv("./features_extracted_audio/validation_features.csv")
 
     # save the index of the features, as extracted from opensmile
-    save("./features_extracted_audio/importante_idx.npy", most_important_features_idx)
+    save("./features_extracted_audio/importance_idx.npy", most_important_features_idx)
 
 
 if __name__ == "__main__":

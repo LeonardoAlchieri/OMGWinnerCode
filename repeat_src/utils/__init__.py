@@ -1,11 +1,11 @@
-from execution_time_wrapper import get_execution_time_print
-from yaml import safe_load as load_yaml
-from typing import Dict, Any
+from typing import Any, Dict, List
+
 import numpy as np
-from numpy import expand_dims, array
-from keras.utils import load_img, img_to_array
+from execution_time_wrapper import get_execution_time_print
+from keras.utils import img_to_array, load_img
 from keras_vggface.utils import preprocess_input
-from typing import List
+from numpy import array, expand_dims
+from yaml import safe_load as load_yaml
 
 
 @get_execution_time_print

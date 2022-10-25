@@ -1,13 +1,14 @@
-from tqdm import tqdm
 from typing import List, Tuple
-from numpy import array, ndarray
+
 import numpy as np
-from pandas import read_csv
 from keras.models import Model
+from numpy import array, ndarray
+from pandas import read_csv
+from tqdm import tqdm
 
 from repeat_src.utils import correct
-from repeat_src.utils.visual import generator_test
 from repeat_src.utils.loss import ccc
+from repeat_src.utils.visual import generator_test
 
 
 def validate_epoch(
@@ -82,7 +83,10 @@ def train_epoch(
 
         if x_temp.shape[0] < max_length:
             x_temp = np.concatenate(
-                (x_temp, np.zeros((max_length - x_temp.shape[0], x_temp.shape[1])),),
+                (
+                    x_temp,
+                    np.zeros((max_length - x_temp.shape[0], x_temp.shape[1])),
+                ),
                 axis=0,
             )
         else:
